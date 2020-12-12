@@ -21,15 +21,21 @@ Scrapegoat.prototype.createEvent = function (key, title, startTime, endTime, loc
     // clone config
     let config = {...this.config}
     // create a unique id
-    const uid = Number(
-        parseInt(key.toLowerCase(), 36) + '' +
-        Number(startTime.join(''))
-    ).toString(16)
+    const uid = key + '-' + (
+        parseInt(
+            title.toLowerCase()
+                .replace(/[^0-9a-z]/g, '')
+                .replace(/.(.)/g, '$1')
+                .substr(0,12), 36)
+            .toString(24) + '-' +
+        Number(startTime.join('')).toString(24)
+    )
     // uri needs to be a specific .ics (in the given calendar)
     config.uri += '/' + uid + '.ics';
     config.headers = {
         'Content-Type': 'text/calendar; charset=utf-8'
     }
+
     // depth must be set to 0 for all requests not using "REPORT" method (idk what it does)
     return request(config, "PUT", 0, `BEGIN:VCALENDAR
 VERSION:2.0

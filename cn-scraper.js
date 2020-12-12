@@ -13,7 +13,7 @@ async function getEvents() {
     } = JSON.parse(await fs.readFileSync('./credentials.json', {encoding: 'utf8'}))
 
     await page.goto('https://campus.srh-hochschule-berlin.de/', {waitUntil: 'networkidle2'});
-    console.log('page loaded')
+    // console.log('page loaded')
 
     // login and wait until loaded
     await Promise.all([
@@ -24,26 +24,27 @@ async function getEvents() {
         }, email, password),
         page.waitForNavigation({waitUntil: 'networkidle0'})
     ])
-    console.log('logged in')
+    // console.log('logged in')
 
     // click on "Termine" and wait until loaded
     await Promise.all([
         page.click('#link000300 a'),
         page.waitForNavigation({waitUntil: 'networkidle0'})
     ])
-    console.log('is now on page "Termine"')
+    // console.log('is now on page "Termine"')
 
     // click on "Monat" and wait until loaded
     await Promise.all([
         page.click('#weekform .tb .nb td.tbcontrol a:nth-of-type(2)'),
         page.waitForNavigation({waitUntil: 'networkidle2'})
     ])
-    console.log('is now in the "Monate" view')
+    // console.log('is now in the "Monate" view')
 
     // get all info for this month
     const getMonthInfo = async () => {
-        const month = await page.$eval('#tbmonthContainer div:first-child', el => el.innerHTML.replace(/ \d{4}/g, '')),
-            events = await page.$$eval('.appMonth', events => events.map(event => {
+        const monthAndYear = await page.$eval('#tbmonthContainer div:first-child', el => el.innerHTML),
+            events = await page.$$eval('.appMonth', (events, monthAndYear) => events.map(event => {
+                const monthsGerman = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
                 const info = event.querySelector('a').getAttribute('title').split(' / '),
                     day = event.parentElement.getAttribute('title').replace(/ /g, ''),
                     time = info[0].split(' - '),
@@ -55,23 +56,27 @@ async function getEvents() {
                     title += ' / ' + info[i]
                     i++
                 }
-                return {day, time, location, title}
-            }))
-        return {name: month, events}
+                return {
+                    day, time, location, title,
+                    month: monthsGerman.indexOf(monthAndYear.replace(/ \d{4}/g, '')) + 1,
+                    year: monthAndYear.match(/\d{4}/g)[0]
+                }
+            }), monthAndYear)
+        return {name: monthAndYear.replace(/ \d{4}/g, ''), events}
     }
     const currentMonth = await getMonthInfo()
-    console.log('got info for this month')
+    // console.log('got info for this month')
 
     // click on ">" (next month) and wait until loaded
     await Promise.all([
         page.click('#tbmonthContainer .arrow_skipBtn a:nth-of-type(3)'),
         page.waitForNavigation({waitUntil: 'networkidle2'})
     ])
-    console.log('is now in the next month of the "Monate" view')
+    // console.log('is now in the next month of the "Monate" view')
 
     // get all info for next month
     const nextMonth = await getMonthInfo()
-    console.log('got info for next month')
+    // console.log('got info for next month')
 
     await browser.close();
 
