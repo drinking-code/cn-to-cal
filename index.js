@@ -129,9 +129,19 @@ let toCreate = [],
             [event.year, event.month, event.day, event.time[1].match(/\d\d(?=:)/)[0], event.time[1].match(/\d\d$/)[0]],
             event.location)
             .catch(err => {
-                console.log('error: could not create event: ' + err +
-                    '\nfor event:\n' + JSON.stringify(event))
-                failedCre++
+                if (err.statusCode === 400) {
+                    console.log(`
+error: Could not create event:
+${event.title}
+${event.day}.${event.month}.${event.year}, ${event.time.join(' - ')}
+${event.location}
+This is likely a problem with the Apple Calendar API. If possible, add this event manually.\n`
+                    )
+                } else {
+                    console.log('error: could not create event: ' + err +
+                        '\nfor event:\n' + JSON.stringify(event))
+                    failedCre++
+                }
             })
     }
 
@@ -139,6 +149,7 @@ let toCreate = [],
     const scrapedNumber = eventsCN[0].events.length + eventsCN[1].events.length,
         deletedNumber = toDelete.length - failedDel,
         createdNumber = toCreate.length - failedCre
+    console.log('')
     console.log(`scraped ${scrapedNumber} event${scrapedNumber === 1 ? '' : 's'}.`)
     console.log(`deleted ${deletedNumber} event${deletedNumber === 1 ? '' : 's'}, failed to delete ${failedDel}.`)
     console.log(`created ${createdNumber} event${createdNumber === 1 ? '' : 's'}, failed to create ${failedCre}.`)

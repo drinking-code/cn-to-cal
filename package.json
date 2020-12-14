@@ -11,6 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "puppeteer": "^5.5.0",
+    "readline-sync": "^1.4.10",
     "scrapegoat": "^1.0.1"
+  },
+  "bin": {
+    "cn-calendar": "cli.js"
   }
 }
