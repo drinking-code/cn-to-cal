@@ -1,9 +1,10 @@
 #!/usr/bin/env node --no-warnings
 const fs = require('fs')
-const readline = require('readline')
 const path = require("path");
 const forever = require('forever')
-const promptly = require('promptly')
+const {confirm, prompt} = require('./lib/prompt')
+
+// todo: make comments here
 
 const args = [...process.argv]
 args.shift()
@@ -32,94 +33,6 @@ forever.load({
     root: path.join(process.mainModule.path, 'forever')
 })
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
-/*function confirm(message, failMsg, def) {
-
-    return new Promise(r => {
-        let data = `${message}${message.endsWith(' ') ? '' : ' '}[${
-            (def === null || def === undefined) ? 'y/n' :
-                (def ? 'Y/n' : 'N/y')
-        }]: `;
-        rl.write(data)
-        readline.emitKeypressEvents(process.stdin);
-        process.stdin.setRawMode(true);
-        const kpHandler = (str, key) => {
-            process.stdin.removeAllListeners()
-            process.stdin.setRawMode(false);
-            process.stdin.resume()
-            rl.write('\n')
-            rl.resume()
-            switch (key.name) {
-                case 'y':
-                    return r(true)
-                case 'n':
-                    return r(false)
-                case 'return':
-                    return r(def)
-                default:
-                    process.stdin.on('keypress', kpHandler)
-                    rl.write(failMsg + (failMsg.endsWith(' ') ? '' : ' '))
-            }
-        }
-        process.stdin.on('keypress', kpHandler)
-    })
-}*/
-
-function confirm(message, failMsg, def) {
-    return new Promise(r => {
-        let data = `${message}${message.endsWith(' ') ? '' : ' '}[${
-            (def === null || def === undefined) ? 'y/n' :
-                (def ? 'Y/n' : 'N/y')
-        }]: `;
-        // rl.write(data)
-
-        const kpHandler = (s, key) => {
-            process.stdin.removeListener('keypress', kpHandler)
-            rl.resume()
-            switch (key.name) {
-                case 'y':
-                    return r(true)
-                case 'n':
-                    return r(false)
-                case 'return':
-                    return r(def)
-                default:
-                    rl.write(failMsg + (failMsg.endsWith(' ') ? '' : ' '))
-                    rl.resume()
-                    process.stdin.on('keypress', kpHandler)
-            }
-        }
-        process.stdin.on('keypress', kpHandler)
-    })
-}
-
-rl.question = (message, secret) => {
-    return new Promise(r => {
-        message = message + message.endsWith(' ') ? '' : ' ';
-        if (!secret)
-            rl.question(message, (answer) => {
-                r(answer);
-            })
-        else {
-            rl.write(message)
-            let answer = '';
-            const kpHandler = (s, key) => {
-                if (key.name === 'return') {
-                    process.stdin.removeListener('keypress', kpHandler)
-                    rl.resume()
-                    r(answer)
-                } else
-                    answer += s
-            }
-            process.stdin.on('keypress', kpHandler)
-        }
-    })
-}
-
 function isRunning() {
     return new Promise(resolve => {
         forever.list(false, (r, l) => {
@@ -143,19 +56,15 @@ function isRunning() {
                     process.exit(0)
             }
             // do the setup
-            let credentials = JSON.parse(fs.writeFileSync(credentials_path, {encoding: 'utf8'}))
+            let credentials = JSON.parse( fs.readFileSync(credentials_path, {encoding: 'utf8'}) )
 
-            credentials.icloud.email = readlineSync.question('icloud email: ') || credentials.icloud.email
-            credentials.icloud.password = readlineSync.question('icloud app-specific password: ', {
-                hideEchoBack: true
-            }) || credentials.icloud.password
-            credentials.icloud.p = readlineSync.question('two digits after p (http://pXX-...): ') || credentials.icloud.p
-            credentials.icloud.DSid = readlineSync.question('DSid: ') || credentials.icloud.DSid
-            credentials.icloud.pGUID = readlineSync.question('pGUID: ') || credentials.icloud.pGUID
-            credentials.campusnet.email = readlineSync.question('campusnet email: ') || credentials.campusnet.email
-            credentials.campusnet.password = readlineSync.question('campusnet password: ', {
-                hideEchoBack: true
-            }) || credentials.campusnet.password
+            credentials.icloud.email = await prompt('icloud email: ') || credentials.icloud.email
+            credentials.icloud.password = await prompt('icloud app-specific password: ', true) || credentials.icloud.password
+            credentials.icloud.p = await prompt('two digits after p (http://pXX-...): ') || credentials.icloud.p
+            credentials.icloud.DSid = await prompt('DSid: ') || credentials.icloud.DSid
+            credentials.icloud.pGUID = await prompt('pGUID: ') || credentials.icloud.pGUID
+            credentials.campusnet.email = await prompt('campusnet email: ') || credentials.campusnet.email
+            credentials.campusnet.password = await prompt('campusnet password: ', true) || credentials.campusnet.password
 
             fs.writeFileSync(credentials_path, JSON.stringify(credentials), {encoding: 'utf8'})
             break
