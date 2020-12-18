@@ -1,5 +1,5 @@
 # CampusNet to Calendar
-This package synchronises your CampusNet dates to your Apple Calendar for the current and the next month. This package mainly exists because the CampusNet App has a bug where users get logged out regularly and date changes won't update. As this bug probably will not be fixed anytime soon, this package will act as an interim solution.
+This package synchronises your CampusNet dates to your Apple Calendar for the current and the next month. This package mainly exists because the CampusNet App has a bug where users get logged out regularly and date changes won't update. As this bug probably will not be fixed any time soon, this package will act as an interim solution.
 
 > Note: If you got here by browsing this package is probably not for you. Unless you also want to synchronise dates from a CampusNet to your Apple Calendar, in which case you want to change the URL in lib/cn-scraper.js
 
@@ -11,16 +11,17 @@ This package synchronises your CampusNet dates to your Apple Calendar for the cu
   - [Setup](#setup)
   - [Starting](#starting)
   - [Stopping](#stopping)
+  - [Reference](#reference)
 - [Contributing](#contributing)
 
 ### How it works
-When you run the script on your computer, it will check twice every day if there were any changes to your CampusNet dates and adjusts them in your cloud calendar. Your calendar app will then fetch the changes and show the correct dates on your phone. Here, I made a figure:  
+When you run the script on your computer, it will check (in the background) twice every day if there were any changes to your CampusNet dates and adjusts them in your cloud calendar. Your calendar app will then fetch the changes and show the correct dates on your phone. Here, I made a figure:  
 
 ![Figure 1](img/figure1.svg)
 
 ## Installation
 ### Where to install
-This system will only work if the package runs on a computer that is online (and connected to the internet) all the time or almost all the time. So, you got a few options:
+This system will only work if the package runs on a computer that is turned on and online all the time or almost all the time. So, you got a few options:
 - run on your laptop / computer (good, when it's used daily in copious amounts)
 - run on a Raspberry Pi (recommended)
 - run on a server that you already pay for (be cautious as your passwords will be saved on the computer that you set the package up with)
@@ -43,9 +44,23 @@ To get the next three values required go to [https://icloud.com/calendar/](https
    ![Screenshot 3](img/screenshot3.jpg)
 ### Starting
 To start, type `cn-calendar` or `cn-calendar run`.
-Use the flag `--once` to run the script once (and not perpetually, twice every day). To see the log for the current process, type `cn-calendar log`. These are deleted everytime you start the package.
+Use the flag `--once` to run the script once (and not perpetually, twice every day). To see the log for the current process, type `cn-calendar log`. This log is deleted every time you start the package.
 ### Stopping
 To stop, type `cn-calendar stop`.
+### Reference
+```
+usage: cn-calendar [<command>] [<args>]
+commands:
+    setup [-y]                          prompts all requred values
+    run [-q|--quiet] [--once] [-y]      starts the script
+    stop                                stops the script
+    log                                 prints the log of the current script
+options:
+    -q, --quiet                         shows only prompts and errors
+    --once                              runs the script only once and not on
+                                        an interval
+    -y                                  confirms all prompts
+```
 
 ## Contributing
 This package currently only works with Apple Calendar. However, not all people use Apple Calendar as their primary calendar. Help to enable them using this package with their favourite calendar app.  

@@ -2,7 +2,7 @@
 const fs = require('fs')
 const path = require("path");
 const forever = require('forever')
-const {confirm, prompt} = require('./lib/prompt')
+const {confirm, prompt, stopRL} = require('./lib/prompt')
 
 // todo: make comments here
 
@@ -16,7 +16,6 @@ const index_path = path.join(process.mainModule.path, 'lib', 'index.js')
 
 const checkFlags = (...flags) => {
     let options = [...args]
-    if (!options[0].startsWith('-'))
         options.shift()
     let foundFlags = []
     options.forEach(arg => {
@@ -42,6 +41,10 @@ function isRunning() {
 }
 
 (async () => {
+    // alias 'run'
+    if (!args[0] || args[0].startsWith('-'))
+        args.unshift('run')
+
     switch (args[0]) {
         case 'setup': {
             const options = checkFlags('-y')
@@ -56,7 +59,7 @@ function isRunning() {
                     process.exit(0)
             }
             // do the setup
-            let credentials = JSON.parse( fs.readFileSync(credentials_path, {encoding: 'utf8'}) )
+            let credentials = JSON.parse(fs.readFileSync(credentials_path, {encoding: 'utf8'}))
 
             credentials.icloud.email = await prompt('icloud email: ') || credentials.icloud.email
             credentials.icloud.password = await prompt('icloud app-specific password: ', true) || credentials.icloud.password
@@ -69,8 +72,6 @@ function isRunning() {
             fs.writeFileSync(credentials_path, JSON.stringify(credentials), {encoding: 'utf8'})
             break
         }
-        case undefined:
-        // alias 'run'
         case 'run': {
             const options = checkFlags('-q', '--quiet', '--once', '-y')
             // check if setup has been done
@@ -83,9 +84,13 @@ function isRunning() {
                 if (!await confirm(
                     'The script is already running. Do you want to restart?',
                     'Press [Y] to restart, or [N] to abort.',
-                    false))
+                    false)
+                )
                     process.exit(0)
-            } else if (options.includes('--once')) {
+                else
+                    forever.stopAll()
+            }
+            if (options.includes('--once')) {
                 require('child_process').fork(index_path)
                     .on('exit', code => {
                         process.exit(code)
@@ -113,12 +118,19 @@ function isRunning() {
             })
             break
         }
-        case 'list': {
-            forever.list(false, console.log)
+        case 'log': {
+            checkFlags()
+            forever.list(false, (n, a) => {
+                a.forEach(process => {
+                    console.log(fs.readFileSync(process.logFile, {encoding: 'utf8'}))
+                })
+            })
             break
         }
         default:
             // error unknown command
             console.error(`Unknown command: '${args[0]}'`)
     }
+
+    stopRL()
 })()
