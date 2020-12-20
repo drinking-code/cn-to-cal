@@ -16,7 +16,7 @@ const index_path = path.join(process.mainModule.path, 'lib', 'index.js')
 
 const checkFlags = (...flags) => {
     let options = [...args]
-        options.shift()
+    options.shift()
     let foundFlags = []
     options.forEach(arg => {
         if (flags.indexOf(arg) === -1) {
@@ -49,18 +49,23 @@ function isRunning() {
         case 'setup': {
             const options = checkFlags('-y')
 
+            let credentials = {
+                icloud: {},
+                campusnet: {}
+            }
+
             if (fs.existsSync(credentials_path) && !options.includes('-y')) {
                 if (await confirm(
                     'You have already run the setup. Running it again will overwrite the current setup.\nDo you want to continue?',
                     'Press [Y] to overwrite, or [N] to abort.',
-                    false))
+                    false)) {
+                    credentials = JSON.parse(fs.readFileSync(credentials_path, {encoding: 'utf8'}))
                     console.log('\nLeave any field blank to keep the previous value.')
-                else
+                } else
                     process.exit(0)
             }
-            // do the setup
-            let credentials = JSON.parse(fs.readFileSync(credentials_path, {encoding: 'utf8'}))
 
+            // do the setup
             credentials.icloud.email = await prompt('icloud email: ') || credentials.icloud.email
             credentials.icloud.password = await prompt('icloud app-specific password: ', true) || credentials.icloud.password
             credentials.icloud.p = await prompt('two digits after p (http://pXX-...): ') || credentials.icloud.p
