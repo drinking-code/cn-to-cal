@@ -10,9 +10,9 @@ const args = [...process.argv]
 args.shift()
 args.shift()
 
-const credentials_path = path.join(process.mainModule.path, 'credentials.json')
-const interval_path = path.join(process.mainModule.path, 'lib', 'interval.js')
-const index_path = path.join(process.mainModule.path, 'lib', 'index.js')
+const credentials_path = path.join(process.cwd(), 'credentials.json')
+const interval_path = path.join(process.cwd(), 'lib', 'interval.js')
+const index_path = path.join(process.cwd(), 'lib', 'index.js')
 
 const checkFlags = (...flags) => {
     let options = [...args]
@@ -29,7 +29,7 @@ const checkFlags = (...flags) => {
 }
 
 forever.load({
-    root: path.join(process.mainModule.path, 'forever')
+    root: path.join(process.cwd(), 'forever')
 })
 
 function isRunning() {
@@ -69,8 +69,8 @@ function isRunning() {
             credentials.icloud.email = await prompt('icloud email: ') || credentials.icloud.email
             credentials.icloud.password = await prompt('icloud app-specific password: ', true) || credentials.icloud.password
             credentials.icloud.p = await prompt('two digits after p (http://pXX-...): ') || credentials.icloud.p
-            credentials.icloud.DSid = await prompt('DSid: ') || credentials.icloud.DSid
-            credentials.icloud.pGUID = await prompt('pGUID: ') || credentials.icloud.pGUID
+            credentials.icloud.DSid = await prompt('DSid: ', true) || credentials.icloud.DSid
+            credentials.icloud.pGUID = await prompt('pGUID: ', true) || credentials.icloud.pGUID
             credentials.campusnet.email = await prompt('campusnet email: ') || credentials.campusnet.email
             credentials.campusnet.password = await prompt('campusnet password: ', true) || credentials.campusnet.password
 

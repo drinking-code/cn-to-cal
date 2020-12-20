@@ -27,7 +27,7 @@ This system will only work if the package runs on a computer that is turned on a
 - run on a server that you already pay for (be cautious as your passwords will be saved on the computer that you set the package up with)
 
 ### How to install
-Have Node.js installed. Run `npm i -g https://github.com/drinking-code/cn-to-cal`.  
+Have Node.js installed. Run `npm i -g drinking-code/cn-to-cal`.  
 To uninstall, run `npm uninstall -g cn-calendar`.
 
 ## Usage

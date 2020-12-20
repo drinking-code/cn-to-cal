@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
+  "repository": "github:drinking-code/cn-to-cal",
   "keywords": [],
   "author": "drinking-code",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drinking-code/cn-to-cal/issues"
+  },
+  "homepage": "https://github.com/drinking-code/cn-to-cal#readme",
   "dependencies": {
     "forever": "^3.0.4",
     "puppeteer": "^5.5.0",
