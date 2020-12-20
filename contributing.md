@@ -1,10 +1,17 @@
 # Contributing
-- [Structure](#structure)
-- [Understanding the code](#understanding-the-code)
-- [Extending Calendar Support](#extending-calendar-support)
+- [Developing](#developing)
+- [The code](#the-code)
+  - [Structure](#structure)
+  - [Understanding the code](#understanding-the-code)
+- [Extending calendar support](#extending-calendar-support)
   - [CalDAV](#caldav)
   - [Implementing new cloud calendars](#implementing-new-cloud-calendars)
-## Structure
+  
+## Developing
+To develop the CLI use `npm link` to create a symlink for the package binary globally. Use `npm unlink` to unlink.  
+For developing on the script directly you can run `lib/index.js` directly without having to link the command.
+## The code
+### Structure
 This Repository consists of multiple script files. `lib/index.js` is the main script file that runs trough the synchronisation process. `cli.js` invokes either `lib/index.js` directly, or the `lib/interval.js` which itself invokes `lib/index.js` every 12 hours.  
 Look at this wonderful box drawing:
 ```
@@ -21,7 +28,7 @@ Look at this wonderful box drawing:
                                                 │  lib/cn-scraper.js  │
                                                 └─────────────────────┘
 ```
-## Understanding the code
+### Understanding the code
 I tired my best to comment the code properly; `cli.js` and `lib/prompt.js` will receive comments shortly.
 
 Here is what every file does:
