@@ -4,15 +4,17 @@ const path = require("path");
 const forever = require('forever')
 const {confirm, prompt, stopRL} = require('./lib/prompt')
 
+process.env.PROJECT_DIRECTORY === __dirname
+
 // todo: make comments here
 
 const args = [...process.argv]
 args.shift()
 args.shift()
 
-const credentials_path = path.join(process.cwd(), 'credentials.json')
-const interval_path = path.join(process.cwd(), 'lib', 'interval.js')
-const index_path = path.join(process.cwd(), 'lib', 'index.js')
+const credentials_path = path.join(process.env.PROJECT_DIRECTORY, 'credentials.json')
+const interval_path = path.join(process.env.PROJECT_DIRECTORY, 'lib', 'interval.js')
+const index_path = path.join(process.env.PROJECT_DIRECTORY, 'lib', 'index.js')
 
 const checkFlags = (...flags) => {
     let options = [...args]
@@ -29,7 +31,7 @@ const checkFlags = (...flags) => {
 }
 
 forever.load({
-    root: path.join(process.cwd(), 'forever')
+    root: path.join(process.env.PROJECT_DIRECTORY, 'forever')
 })
 
 function isRunning() {
