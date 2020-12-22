@@ -4,7 +4,7 @@ const path = require("path");
 const forever = require('forever')
 const {confirm, prompt, stopRL} = require('./lib/prompt')
 
-process.env.PROJECT_DIRECTORY === __dirname
+process.env.PROJECT_DIRECTORY = __dirname
 
 // todo: make comments here
 
