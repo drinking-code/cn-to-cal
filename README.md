@@ -1,4 +1,6 @@
 # CampusNet to Calendar
+> ⛔️ This package seems to not be working at the moment. ⛔️
+
 This package synchronises your CampusNet dates to your Apple Calendar for the current and the next month. This package mainly exists because the CampusNet App has a bug where users get logged out regularly and date changes won't update. As this bug probably will not be fixed any time soon, this package will act as an interim solution.
 
 > Note: If you got here by browsing this package is probably not for you. Unless you also want to synchronise dates from a CampusNet to your Apple Calendar, in which case you want to change the URL in lib/cn-scraper.js
