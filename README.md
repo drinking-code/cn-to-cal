@@ -32,6 +32,19 @@ This system will only work if the package runs on a computer that is turned on a
 Have Node.js installed. Run `npm i -g drinking-code/cn-to-cal`.  
 To uninstall, run `npm uninstall -g cn-calendar`.
 
+### Updating
+#### From v1.0.0
+If you have version 1.0.0 already installed and don't want to lose you configuration, copy it to `/tmp` like this (on Unix-based systems)
+```shell
+cp $(npm config -g get prefix)/lib/node_modules/cn-calendar/credentials.json /tmp/cn-calendar-data.json
+```
+Then run `npm i -g drinking-code/cn-to-cal` to install the newest version.
+
+> **Special extra tip:** If `cn-calendar version` returns `Unknown command: 'version'`, you're on version v1.0.0
+
+#### From v1.1.0 and up
+Run `cn-calendar update`.
+
 ## Usage
 Although this packages does most things of the process automatically, there is a short setup you have to go through to use it properly.
 ### Setup

@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require("path");
 const forever = require('forever')
 const {confirm, prompt, stopRL} = require('./lib/prompt')
+const {spawn} = require('child_process')
 
 process.env.PROJECT_DIRECTORY = __dirname
 
@@ -144,6 +145,14 @@ const printVersion = () => {
         }
         case 'version': {
             printVersion()
+            break
+        }
+        case 'update': {
+            const npm = (process.platform === "win32" ? "npm.cmd" : "npm")
+            spawn(npm, ['run', 'update'], {
+                stdio: 'inherit',
+                cwd: process.env.PROJECT_DIRECTORY
+            })
             break
         }
         default:
