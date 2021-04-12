@@ -1,5 +1,4 @@
 # CampusNet to Calendar
-> ⛔️ This package seems to not be working at the moment. ⛔️
 
 This package synchronises your CampusNet dates to your Apple Calendar for the current and the next month. This package mainly exists because the CampusNet App has a bug where users get logged out regularly and date changes won't update. As this bug probably will not be fixed any time soon, this package will act as an interim solution.
 
@@ -9,6 +8,7 @@ This package synchronises your CampusNet dates to your Apple Calendar for the cu
 - [Installation](#installation)
   - [Where to install](#where-to-install)
   - [How to install](#how-to-install)
+  - [Updating](#updating)
 - [Usage](#usage)
   - [Setup](#setup)
   - [Starting](#starting)

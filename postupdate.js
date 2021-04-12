@@ -5,8 +5,10 @@ const {exec} = require('child_process');
 (async () => {
     console.log('Retrieving your data.')
 
-    if (!fs.existsSync('/tmp/cn-calendar-data.json'))
+    if (!fs.existsSync('/tmp/cn-calendar-data.json')) {
         console.log('No data to retrieve.')
+        process.exit(0)
+    }
 
     const prefix = await new Promise(resolve =>
             exec('npm config -g get prefix', (error, stdout) => {

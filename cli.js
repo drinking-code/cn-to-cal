@@ -7,6 +7,8 @@ const {spawn} = require('child_process')
 
 process.env.PROJECT_DIRECTORY = __dirname
 
+process.on('exit', stopRL.bind(null, {cleanup: true}));
+
 // todo: make comments here
 
 const args = [...process.argv]
