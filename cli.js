@@ -42,7 +42,15 @@ function isRunning() {
     })
 }
 
+const printVersion = () => {
+    console.log('CampusNet to Calendar; version ' + require('./package.json').version)
+}
+
 (async () => {
+    // alias 'version'
+    if (args[0] === '-v' || args[0] === '--version')
+        args[0] = 'version'
+
     // alias 'run'
     if (!args[0] || args[0].startsWith('-'))
         args.unshift('run')
@@ -132,6 +140,10 @@ function isRunning() {
                     console.log(fs.readFileSync(process.logFile, {encoding: 'utf8'}))
                 })
             })
+            break
+        }
+        case 'version': {
+            printVersion()
             break
         }
         default:
