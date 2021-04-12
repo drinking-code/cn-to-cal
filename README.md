@@ -70,11 +70,14 @@ commands:
     run [-q|--quiet] [--once] [-y]      starts the script
     stop                                stops the script
     log                                 prints the log of the current script
+    version                             prints the version you have installed
+    update                              updates to the latest version
 options:
     -q, --quiet                         shows only prompts and errors
-    --once                              runs the script only once and not on
-                                        an interval
+    --once                              runs the script only once and not on an interval
     -y                                  confirms all prompts
+    -v, --version                       alias to the version command. Only use without a
+                                        command, and without another flag
 ```
 
 ## Contributing
