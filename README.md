@@ -1,5 +1,4 @@
 # CampusNet to Calendar
-> ⛔️ This package seems to not be working at the moment. ⛔️
 
 This package synchronises your CampusNet dates to your Apple Calendar for the current and the next month. This package mainly exists because the CampusNet App has a bug where users get logged out regularly and date changes won't update. As this bug probably will not be fixed any time soon, this package will act as an interim solution.
 
@@ -9,6 +8,7 @@ This package synchronises your CampusNet dates to your Apple Calendar for the cu
 - [Installation](#installation)
   - [Where to install](#where-to-install)
   - [How to install](#how-to-install)
+  - [Updating](#updating)
 - [Usage](#usage)
   - [Setup](#setup)
   - [Starting](#starting)
@@ -31,6 +31,19 @@ This system will only work if the package runs on a computer that is turned on a
 ### How to install
 Have Node.js installed. Run `npm i -g drinking-code/cn-to-cal`.  
 To uninstall, run `npm uninstall -g cn-calendar`.
+
+### Updating
+#### From v1.0.0
+If you have version 1.0.0 already installed and don't want to lose you configuration, copy it to `/tmp` like this (on Unix-based systems)
+```shell
+cp $(npm config -g get prefix)/lib/node_modules/cn-calendar/credentials.json /tmp/cn-calendar-data.json
+```
+Then run `npm i -g drinking-code/cn-to-cal` to install the newest version.
+
+> **Special extra tip:** If `cn-calendar version` returns `Unknown command: 'version'`, you're on version v1.0.0
+
+#### From v1.1.0 and up
+Run `cn-calendar update`.
 
 ## Usage
 Although this packages does most things of the process automatically, there is a short setup you have to go through to use it properly.
@@ -57,11 +70,14 @@ commands:
     run [-q|--quiet] [--once] [-y]      starts the script
     stop                                stops the script
     log                                 prints the log of the current script
+    version                             prints the version you have installed
+    update                              updates to the latest version
 options:
     -q, --quiet                         shows only prompts and errors
-    --once                              runs the script only once and not on
-                                        an interval
+    --once                              runs the script only once and not on an interval
     -y                                  confirms all prompts
+    -v, --version                       alias to the version command. Only use without a
+                                        command, and without another flag
 ```
 
 ## Contributing

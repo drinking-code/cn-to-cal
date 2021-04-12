@@ -1,6 +1,6 @@
 {
   "name": "cn-calendar",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "lib/index.js",
   "repository": "github:drinking-code/cn-to-cal",
@@ -9,6 +9,10 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/drinking-code/cn-to-cal/issues"
+  },
+  "scripts": {
+    "postinstall": "node postupdate.js",
+    "update": "node update.js"
   },
   "homepage": "https://github.com/drinking-code/cn-to-cal#readme",
   "dependencies": {

@@ -3,8 +3,11 @@ const fs = require('fs')
 const path = require("path");
 const forever = require('forever')
 const {confirm, prompt, stopRL} = require('./lib/prompt')
+const {spawn} = require('child_process')
 
 process.env.PROJECT_DIRECTORY = __dirname
+
+process.on('exit', stopRL.bind(null, {cleanup: true}));
 
 // todo: make comments here
 
@@ -42,7 +45,15 @@ function isRunning() {
     })
 }
 
+const printVersion = () => {
+    console.log('CampusNet to Calendar; version ' + require('./package.json').version)
+}
+
 (async () => {
+    // alias 'version'
+    if (args[0] === '-v' || args[0] === '--version')
+        args[0] = 'version'
+
     // alias 'run'
     if (!args[0] || args[0].startsWith('-'))
         args.unshift('run')
@@ -131,6 +142,18 @@ function isRunning() {
                 a.forEach(process => {
                     console.log(fs.readFileSync(process.logFile, {encoding: 'utf8'}))
                 })
+            })
+            break
+        }
+        case 'version': {
+            printVersion()
+            break
+        }
+        case 'update': {
+            const npm = (process.platform === "win32" ? "npm.cmd" : "npm")
+            spawn(npm, ['run', 'update'], {
+                stdio: 'inherit',
+                cwd: process.env.PROJECT_DIRECTORY
             })
             break
         }
