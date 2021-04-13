@@ -150,8 +150,7 @@ const printVersion = () => {
             break
         }
         case 'update': {
-            const npm = (process.platform === "win32" ? "npm.cmd" : "npm")
-            spawn(npm, ['run', 'update'], {
+            spawn('node', ['update.js'], {
                 stdio: 'inherit',
                 cwd: process.env.PROJECT_DIRECTORY
             })

@@ -10,10 +10,6 @@
   "bugs": {
     "url": "https://github.com/drinking-code/cn-to-cal/issues"
   },
-  "scripts": {
-    "postinstall": "node postupdate.js",
-    "update": "node update.js"
-  },
   "homepage": "https://github.com/drinking-code/cn-to-cal#readme",
   "dependencies": {
     "forever": "^3.0.4",
