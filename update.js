@@ -19,7 +19,7 @@ const {exec, spawn} = require('child_process');
 
     console.log('Updating...')
     const npm = (process.platform === "win32" ? "npm.cmd" : "npm")
-    const updateProcess = spawn(npm, ['i', '-g', 'drinking-code/campusnet-feed-test'], {stdio: 'inherit'})
+    const updateProcess = spawn(npm, ['i', '-g', 'drinking-code/cn-to-cal'], {stdio: 'inherit'})
     updateProcess.on('close', () => {
         spawn('node', [`${prefix}/lib/node_modules/cn-calendar/postupdate.js`, prefix], {stdio: 'inherit'})
     })
