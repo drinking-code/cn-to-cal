@@ -12,7 +12,6 @@
   },
   "homepage": "https://github.com/drinking-code/cn-to-cal#readme",
   "dependencies": {
-    "forever": "^3.0.4",
     "puppeteer": "^5.5.0",
     "scrapegoat": "^1.0.1"
   },
