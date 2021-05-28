@@ -1,6 +1,6 @@
 {
   "name": "cn-calendar",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "main": "lib/index.js",
   "repository": "github:drinking-code/cn-to-cal",
@@ -12,8 +12,9 @@
   },
   "homepage": "https://github.com/drinking-code/cn-to-cal#readme",
   "dependencies": {
-    "puppeteer": "^5.5.0",
-    "scrapegoat": "^1.0.1"
+    "cross-fetch": "^3.1.4",
+    "querystring": "^0.2.1",
+    "scrapegoat": "^2.0.0"
   },
   "bin": {
     "cn-calendar": "cli.js"
